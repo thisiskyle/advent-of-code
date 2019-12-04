@@ -7,7 +7,7 @@ int main() {
     int answer2 = 0;
     int input;
     std::ifstream input_file;
-    input_file.open("./input.txt");
+    input_file.open("./inputs/day1.txt");
 
     while(input_file >> input) {
         input = std::floor(input / 3) - 2;
