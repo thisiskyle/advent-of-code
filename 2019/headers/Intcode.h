@@ -1,7 +1,6 @@
 #ifndef INTCODE_H
 #define INTCODE_H
 
-
 #include <vector>
 #include <iostream>
 
