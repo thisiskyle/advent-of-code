@@ -14,7 +14,7 @@ namespace util {
         return input_file;
     }
 
-    void read_file_by_line(std::string input_path, std::vector<std::string> *input) {
+    void read_file_by_line(std::string input_path, std::vector<std::string>* input) {
         std::string temp;
         std::ifstream input_file;
         input_file.open(input_path);
@@ -22,11 +22,16 @@ namespace util {
             input->push_back(temp);
         }
     }
-    void split_string(std::string s, char delim, std::vector<std::string> *string_list) {
+    void split_string(std::string s, char delim, std::vector<std::string>* string_list) {
         std::string temp;
         std::stringstream ss(s);
         while(getline(ss, temp, delim)) {
             string_list->push_back(temp);
+        }
+    }
+    void v_stoi(std::vector<std::string> s, std::vector<int>* out) {
+        for(auto i : s) {
+            out->push_back(std::stoi(i));
         }
     }
 

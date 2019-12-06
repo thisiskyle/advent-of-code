@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include "./headers/Intcode.h"
+#include "./headers/Intcode_Computer.h"
 
 int main() {
     // reading input file
@@ -14,14 +14,19 @@ int main() {
     while(getline(input_file, temp, ',')) {
         input.push_back(std::stoi(temp));
     }
-    std::cout << "part 1: " << Intcode::run(input, 12, 2) << std::endl;
+
+    Intcode_Computer intcode(input);
+    intcode.run(12, 2);
+    std::cout << "part 1: " << intcode.get_output() << std::endl;
 
     int noun;
     int verb;
 
     for(noun = 0; noun < 100; noun++) {
         for(verb = 0; verb < 100; verb++) {
-            if(Intcode::run(input, noun, verb) == 19690720 ) {
+            intcode.reset_memory();
+            intcode.run(noun, verb);
+            if(intcode.get_output() == 19690720 ) {
                 goto loop_break;
             }
         }
