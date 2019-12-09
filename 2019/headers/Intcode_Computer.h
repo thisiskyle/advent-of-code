@@ -63,8 +63,8 @@ public:
     }
 
     void opcode1_2(const int& opcode, int& instruction_pointer, const std::vector<int>& parameter_modes) {
-        int param1 = parameter_modes[0] == 0 ? dynamic_memory[dynamic_memory[instruction_pointer + 1]] : dynamic_memory[instruction_pointer + 1];
-        int param2 = parameter_modes[1] == 0 ? dynamic_memory[dynamic_memory[instruction_pointer + 2]] : dynamic_memory[instruction_pointer + 2];
+        int param1 = get_parameter(parameter_modes[0], instruction_pointer, 1);
+        int param2 = get_parameter(parameter_modes[1], instruction_pointer, 2);
         int write_address = dynamic_memory[instruction_pointer + 3];
 
         if(opcode == 1) dynamic_memory[write_address] = param1 + param2;
@@ -90,28 +90,28 @@ public:
     }
 
     void opcode5(int& instruction_pointer, const std::vector<int>& parameter_modes) {
-        int param1 = parameter_modes[0] == 0 ? dynamic_memory[dynamic_memory[instruction_pointer + 1]] : dynamic_memory[instruction_pointer + 1];
-        int param2 = parameter_modes[1] == 0 ? dynamic_memory[dynamic_memory[instruction_pointer + 2]] : dynamic_memory[instruction_pointer + 2];
+        int param1 = get_parameter(parameter_modes[0], instruction_pointer, 1);
+        int param2 = get_parameter(parameter_modes[1], instruction_pointer, 2);
         instruction_pointer = param1 != 0 ? param2 : (instruction_pointer + 3);
     }
 
     void opcode6(int& instruction_pointer, const std::vector<int>& parameter_modes) {
-        int param1 = parameter_modes[0] == 0 ? dynamic_memory[dynamic_memory[instruction_pointer + 1]] : dynamic_memory[instruction_pointer + 1];
-        int param2 = parameter_modes[1] == 0 ? dynamic_memory[dynamic_memory[instruction_pointer + 2]] : dynamic_memory[instruction_pointer + 2];
+        int param1 = get_parameter(parameter_modes[0], instruction_pointer, 1);
+        int param2 = get_parameter(parameter_modes[1], instruction_pointer, 2);
         instruction_pointer = param1 == 0 ? param2 : (instruction_pointer + 3);
     }
 
     void opcode7(int& instruction_pointer, const std::vector<int>& parameter_modes) {
-        int param1 = parameter_modes[0] == 0 ? dynamic_memory[dynamic_memory[instruction_pointer + 1]] : dynamic_memory[instruction_pointer + 1];
-        int param2 = parameter_modes[1] == 0 ? dynamic_memory[dynamic_memory[instruction_pointer + 2]] : dynamic_memory[instruction_pointer + 2];
+        int param1 = get_parameter(parameter_modes[0], instruction_pointer, 1);
+        int param2 = get_parameter(parameter_modes[1], instruction_pointer, 2);
         int write_address = dynamic_memory[instruction_pointer + 3];
         dynamic_memory[write_address] = (param1 < param2);
         instruction_pointer += 4;
     }
 
     void opcode8(int& instruction_pointer, const std::vector<int>& parameter_modes) {
-        int param1 = parameter_modes[0] == 0 ? dynamic_memory[dynamic_memory[instruction_pointer + 1]] : dynamic_memory[instruction_pointer + 1];
-        int param2 = parameter_modes[1] == 0 ? dynamic_memory[dynamic_memory[instruction_pointer + 2]] : dynamic_memory[instruction_pointer + 2];
+        int param1 = get_parameter(parameter_modes[0], instruction_pointer, 1);
+        int param2 = get_parameter(parameter_modes[1], instruction_pointer, 2);
         int write_address = dynamic_memory[instruction_pointer + 3];
         dynamic_memory[write_address] = (param1 == param2);
         instruction_pointer += 4;
@@ -142,6 +142,9 @@ public:
         temp_list.erase(temp_list.begin(), temp_list.begin() + 2);
         parameter_modes = temp_list;
     }
-};
 
+    int get_parameter(const int& mode, const int& instruction_pointer, int offset) {
+        return mode == 0 ? dynamic_memory[dynamic_memory[instruction_pointer + offset]] : dynamic_memory[instruction_pointer + offset];
+    }
+};
 #endif
