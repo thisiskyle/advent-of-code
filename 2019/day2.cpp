@@ -15,7 +15,7 @@ int main() {
         input.push_back(std::stoi(temp));
     }
 
-    Intcode_Computer intcode(input);
+    Intcode_Computer intcode(input, false);
     intcode.run(12, 2);
     std::cout << "part 1: " << intcode.get_output() << std::endl;
 
@@ -24,7 +24,7 @@ int main() {
 
     for(noun = 0; noun < 100; noun++) {
         for(verb = 0; verb < 100; verb++) {
-            intcode.reset_memory();
+            intcode.reset_dynamic_memory();
             intcode.run(noun, verb);
             if(intcode.get_output() == 19690720 ) {
                 goto loop_break;

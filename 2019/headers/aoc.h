@@ -22,6 +22,18 @@ namespace util {
             input->push_back(temp);
         }
     }
+
+    std::vector<std::string> read_file_by_line(std::string input_path) {
+        std::string temp;
+        std::vector<std::string> input;
+        std::ifstream input_file;
+        input_file.open(input_path);
+        while(getline(input_file, temp)) {
+            input.push_back(temp);
+        }
+        return input;
+    }
+
     void split_string(std::string s, char delim, std::vector<std::string>* string_list) {
         std::string temp;
         std::stringstream ss(s);
@@ -29,10 +41,27 @@ namespace util {
             string_list->push_back(temp);
         }
     }
+    std::vector<std::string> split_string(std::string s, char delim) {
+        std::string temp;
+        std::vector<std::string> string_list;
+        std::stringstream ss(s);
+        while(getline(ss, temp, delim)) {
+            string_list.push_back(temp);
+        }
+        return string_list;
+    }
+
     void v_stoi(std::vector<std::string> s, std::vector<int>* out) {
         for(auto i : s) {
             out->push_back(std::stoi(i));
         }
+    }
+    std::vector<int> v_stoi(std::vector<std::string> s) {
+        std::vector<int> out;
+        for(auto i : s) {
+            out.push_back(std::stoi(i));
+        }
+        return out;
     }
 
     int ctoi(char c) {
