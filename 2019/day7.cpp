@@ -5,13 +5,14 @@
 
 class Amp {
 public:
-    Intcode_Computer* computer;
+    Intcode_Computer computer{"./inputs/day7.txt", true};
     int phase;
     int output;
     bool first_run;
 
     Amp() { 
-        computer = new Intcode_Computer("./inputs/day7.txt", true);
+    }
+    ~Amp() {
     }
 
     void run(int in) {
@@ -21,19 +22,19 @@ public:
             first_run = false;
         }
         input.push_back(in);
-        computer->run(input, &output);
+        computer.run(input, &output);
     }
 
     int get_output() {
         return output;
     }
     bool is_computer_halted() {
-        return computer->halted;
+        return computer.halted;
     }
     void reset() {
         output = 0;
         first_run = true;
-        computer->reset();
+        computer.reset();
     }
 };
 
