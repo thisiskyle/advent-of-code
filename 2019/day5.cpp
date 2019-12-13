@@ -4,6 +4,6 @@
 #include "./headers/aoc.h"
 
 int main() {
-    Intcode_Computer computer("./inputs/day5.txt", true);
+    Intcode_Computer computer("./inputs/day5.txt", false, true);
     return 0;
 }
