@@ -63,6 +63,18 @@ namespace util {
         }
         return out;
     }
+    void v_stoli(std::vector<std::string> s, std::vector<long int>* out) {
+        for(auto i : s) {
+            out->push_back(std::stoi(i));
+        }
+    }
+    std::vector<long int> v_stoli(std::vector<std::string> s) {
+        std::vector<long int> out;
+        for(auto i : s) {
+            out.push_back(std::stoi(i));
+        }
+        return out;
+    }
 
     int ctoi(char c) {
         return c - '0';
