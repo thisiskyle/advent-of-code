@@ -7,7 +7,7 @@ class Amp {
 public:
     Intcode_Computer computer{"./inputs/day7.txt", true};
     int phase;
-    long int output;
+    long long int output;
     bool first_run;
 
     Amp() { 
@@ -16,7 +16,7 @@ public:
     }
 
     void run(int in) {
-        std::vector<long int> input;
+        std::vector<long long int> input;
         if(first_run) {
             input.push_back(phase);
             first_run = false;
@@ -44,9 +44,9 @@ int main() {
 
     std::vector<int> phase_settings{0,1,2,3,4}; // a b c d e
     do {
-        long int output = 0;
+        long long int output = 0;
         for(int i = 0; i < 5; ++i) {
-            std::vector<long int> input{ phase_settings[i], output };
+            std::vector<long long int> input{ phase_settings[i], output };
             computer.reset();
             computer.run(input, &output);
             if(output > largest) {

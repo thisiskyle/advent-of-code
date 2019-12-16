@@ -10,7 +10,7 @@ int main() {
     input_file.open("./inputs/day2.txt");
 
     std::string temp;
-    std::vector<int> input;
+    std::vector<long long int> input;
     while(getline(input_file, temp, ',')) {
         input.push_back(std::stoi(temp));
     }
@@ -24,7 +24,7 @@ int main() {
 
     for(noun = 0; noun < 100; noun++) {
         for(verb = 0; verb < 100; verb++) {
-            intcode.reset_dynamic_memory();
+            intcode.reset();
             intcode.run(noun, verb);
             if(intcode.get_output() == 19690720 ) {
                 goto loop_break;

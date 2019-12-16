@@ -8,5 +8,9 @@
 
 int main() {
 
+    Intcode_Computer computer("./inputs/day9.txt", {1}, false, true);
+    computer.reset();
+    computer.run({2});
+
     return 0;
 }
