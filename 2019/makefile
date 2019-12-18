@@ -1,3 +1,7 @@
+10:
+	g++ ./day10.cpp
+	./a.exe
+
 9:
 	g++ ./day9.cpp
 	./a.exe
