@@ -91,6 +91,18 @@ namespace util {
     int ctoi(char c) {
         return c - '0';
     }
+
+    template <typename T>
+    int find_index_of(const std::vector<T>& v, const T& element) {
+        std::pair<bool, int > result;
+        auto it = std::find(v.begin(), v.end(), element);
+
+        if (it != v.end())
+        {
+            return distance(v.begin(), it);
+        }
+        return -1;
+    }
 }
 
 
