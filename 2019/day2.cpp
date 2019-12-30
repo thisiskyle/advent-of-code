@@ -5,30 +5,24 @@
 #include "./headers/Intcode_Computer.h"
 
 int main() {
-    // reading input file
-    std::ifstream input_file;
-    input_file.open("./inputs/day2.txt");
 
-    std::string temp;
-    std::vector<long long int> input;
-    while(getline(input_file, temp, ',')) {
-        input.push_back(std::stoi(temp));
-    }
+    Intcode_Computer computer("./inputs/day2.txt");
+    computer.insert_noun_and_verb(12, 2);
+    computer.run();
 
-    Intcode_Computer intcode(input, false);
-    intcode.run(12, 2);
-    std::cout << "part 1: " << intcode.get_output() << std::endl;
 
-    int noun;
-    int verb;
+    std::cout << "part 1: " << computer.get_output() << std::endl;
 
+
+    int noun, verb;
     for(noun = 0; noun < 100; noun++) {
         for(verb = 0; verb < 100; verb++) {
-            intcode.reset();
-            intcode.run(noun, verb);
-            if(intcode.get_output() == 19690720 ) {
-                goto loop_break;
-            }
+
+            computer.reset();
+            computer.insert_noun_and_verb(noun, verb);
+            computer.run();
+
+            if(computer.get_output() == 19690720 ) { goto loop_break; }
         }
     }
     loop_break:

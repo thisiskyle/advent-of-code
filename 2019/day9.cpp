@@ -8,9 +8,14 @@
 
 int main() {
 
-    Intcode_Computer computer("./inputs/day9.txt", {1}, false, true);
+    // part 1
+    Intcode_Computer computer("./inputs/day9.txt", {1});
+    computer.run();
+
+    // part 2
     computer.reset();
-    computer.run({2});
+    computer.add_input(2);
+    computer.run();
 
     return 0;
 }

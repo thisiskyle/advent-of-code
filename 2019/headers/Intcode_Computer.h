@@ -10,151 +10,145 @@ class Intcode_Computer {
 
 public:
 
-    Intcode_Computer(const std::vector<long long int>& memory, bool pauses = false, bool run_now = false, long long int* _out = NULL) {
-        static_memory = memory;
-        reset_dynamic_memory();
-        out = _out;
-        pause_after_output = pauses;
-        if(run_now) run();
-    }
-    Intcode_Computer(const std::vector<long long int>& memory, std::vector<long long int> _inputs, bool pauses = false, bool run_now = false, long long int* _out = NULL) {
-        static_memory = memory;
-        reset_dynamic_memory();
-        inputs = _inputs;
-        out = _out;
-        pause_after_output = pauses;
-        if(run_now) run();
+    Intcode_Computer(const std::string& program_path, const std::vector<long long int>& _inputs = std::vector<long long int>()) {
+        std::vector<std::string> lines = util::read_file_by_line(program_path);
+        std::vector<std::string> split = util::split_string(lines[0], ',');
+        add_input(_inputs);
+        util::v_stolli(split, &program);
+        memory = program;
     }
 
-    Intcode_Computer(std::string initial_state_path, bool pauses = false, bool run_now = false, long long int* _out = NULL) {
-        std::vector<std::string> lines = util::read_file_by_line(initial_state_path);
-        std::vector<std::string> split = util::split_string(lines[0], ',');
-        util::v_stolli(split, &static_memory);
+    void run(bool _pause_on_out = false, long long int* _out = NULL) {
+        if(paused) resume();
+        pause_on_out = _pause_on_out;
         out = _out;
-        pause_after_output = pauses;
-        reset_dynamic_memory();
-        if(run_now) run();
-    }
-    Intcode_Computer(std::string initial_state_path, std::vector<long long int> _inputs, bool pauses = false, bool run_now = false, long long int* _out = NULL) {
-        std::vector<std::string> lines = util::read_file_by_line(initial_state_path);
-        std::vector<std::string> split = util::split_string(lines[0], ',');
-        inputs = _inputs;
-        out = _out;
-        pause_after_output = pauses;
-        util::v_stolli(split, &static_memory);
-        reset_dynamic_memory();
-        if(run_now) run();
+        while(!halted && !paused) { step(); }
     }
     
-    void run(long long int noun, long long int verb) {
-        dynamic_memory[1] = noun;
-        dynamic_memory[2] = verb;
-        run();
-    }
 
-    void run(std::vector<long long int> _inputs, long long int* _out = NULL) {
-        inputs = _inputs;
-        out = _out;
-        run();
-    }
+    void step(long long int* _out = NULL) {
+        if(halted) { return; }
 
-    // general use run function
-    void run() {
-        running = true;
-        while(running && !halted && dynamic_memory[instruction_pointer] != 99) {
-            int opcode;
-            allocate_memory(instruction_pointer);
+        allocate_memory(instruction_pointer);
 
-            std::vector<int> parameter_modes = parse_instructions(dynamic_memory[instruction_pointer], opcode);
+        int opcode;
+        std::vector<int> parameter_modes = parse_instructions(memory[instruction_pointer], opcode);
 
-            long long int param1 = dynamic_memory[get_parameter_address(parameter_modes[0], 1)];
-            long long int param2 = dynamic_memory[get_parameter_address(parameter_modes[1], 2)];
-            long long int param3 = get_parameter_address(parameter_modes[2], 3);
+        long long int param1 = memory[get_parameter_address(parameter_modes[0], 1)];
+        long long int param2 = memory[get_parameter_address(parameter_modes[1], 2)];
+        long long int param3 = get_parameter_address(parameter_modes[2], 3);
 
 
-            switch(opcode) {
-                case 1: 
-                    dynamic_memory[param3] = param1 + param2;
-                    instruction_pointer += 4;
-                    break;
-                case 2:
-                    dynamic_memory[param3] = param1 * param2;
-                    instruction_pointer += 4;
-                    break;
-                case 3:
-                    long long int input;
-                    if(inputs.size() > input_index) {
-                        input = inputs[input_index];
-                        ++input_index;
-                    } else { // get user input
-                        std::cout << "Please provide a system ID: ";
-                        std::cin >> input;
-                    }
-                    dynamic_memory[get_parameter_address(parameter_modes[0], 1)] = input;
-                    instruction_pointer += 2;
-                    break;
-                case 4:
-                    if(out == NULL) { std::cout << param1 << std::endl; }
-                    else { *out = param1; }
-                    if(pause_after_output) pause();
-                    instruction_pointer += 2;
-                    break;
-                case 5:
-                    instruction_pointer = param1 != 0 ? param2 : (instruction_pointer + 3);
-                    break;
-                case 6:
-                    instruction_pointer = param1 == 0 ? param2 : (instruction_pointer + 3);
-                    break;
-                case 7:
-                    dynamic_memory[param3] = (param1 < param2);
-                    instruction_pointer += 4;
-                    break;
-                case 8:
-                    dynamic_memory[param3] = (param1 == param2);
-                    instruction_pointer += 4;
-                    break;
-                case 9:
-                    relative_base += param1;
-                    instruction_pointer += 2;
-                    break;
-                default:
-                    std::cout << "Error: Opcode " << opcode << " invalid" << std::endl;
-                    std::cout << "Instruction: " << dynamic_memory[instruction_pointer] << std::endl;
-                    return;
-            }
+        switch(opcode) {
+            case 1: 
+                memory[param3] = param1 + param2;
+                instruction_pointer += 4;
+                break;
+
+            case 2:
+                memory[param3] = param1 * param2;
+                instruction_pointer += 4;
+                break;
+
+            case 3:
+                if(input_buffer.size() > 0) {
+                    memory[get_parameter_address(parameter_modes[0], 1)] = input_buffer[0];
+                    input_buffer.erase(input_buffer.begin());
+                }
+                instruction_pointer += 2;
+                break;
+
+            case 4:
+                if(out == NULL) { std::cout << "OUT: " << param1 << std::endl; }
+                else { *out = param1; }
+
+                instruction_pointer += 2;
+                if(pause_on_out) pause();
+
+                break;
+
+            case 5:
+                instruction_pointer = param1 != 0 ? param2 : (instruction_pointer + 3);
+                break;
+
+            case 6:
+                instruction_pointer = param1 == 0 ? param2 : (instruction_pointer + 3);
+                break;
+
+            case 7:
+                memory[param3] = (param1 < param2);
+                instruction_pointer += 4;
+                break;
+
+            case 8:
+                memory[param3] = (param1 == param2);
+                instruction_pointer += 4;
+                break;
+
+            case 9:
+                relative_base += param1;
+                instruction_pointer += 2;
+                break;
+
+            default:
+                std::cout << "Error: Opcode " << opcode << " invalid" << std::endl;
+                std::cout << "Instruction: " << memory[instruction_pointer] << std::endl;
+                return;
         }
-        if(dynamic_memory[instruction_pointer] == 99) {
+
+        if(memory[instruction_pointer] == 99) {
             halt();
         }
     }
 
     void reset() {
-        reset_dynamic_memory();
+        memory = program;
         instruction_pointer = 0;
         halted = false;
+        paused = false;
         relative_base = 0;
+        input_buffer.clear();
     }
 
     // specific for use with day 2
     int get_output() {
-        return dynamic_memory[0];
+        return memory[0];
+    }
+    // specific for use with day 2
+    void insert_noun_and_verb(long long int noun, long long int verb) {
+        memory[1] = noun;
+        memory[2] = verb;
     }
 
     bool is_halted() {
         return halted;
     }
+    bool is_paused() {
+        return paused;
+    }
+    void add_input(long long int input) {
+        input_buffer.push_back(input);
+    }
+    void add_input(std::vector<long long int> input) {
+        for(auto i : input) {
+            input_buffer.push_back(i);
+        }
+    }
 
 private:
-    std::vector<long long int> static_memory;
-    std::vector<long long int> dynamic_memory;
-    std::vector<long long int> inputs;
+    std::vector<long long int> program;
+    std::vector<long long int> memory;
+
+    std::vector<long long int> input_buffer;
+
     long long int instruction_pointer = 0;
-    long long int input_index = 0;
     long long int relative_base = 0;
+
     long long int* out;
-    bool running = false;
+
     bool halted = false;
-    bool pause_after_output = false;
+    bool paused = false;
+    bool pause_on_out = false;
 
     std::vector<int> parse_instructions(int instruction, int& opcode) {
         int temp = instruction;
@@ -169,21 +163,17 @@ private:
         return temp_list;
     }
 
-    void reset_dynamic_memory() {
-        dynamic_memory = static_memory;
-    }
-
     int get_parameter_address(const int& mode, int offset) {
         int address = 0;
         switch(mode) {
             case 0:
-                address = dynamic_memory[instruction_pointer + offset];
+                address = memory[instruction_pointer + offset];
                 break;
             case 1:
                 address = instruction_pointer + offset;
                 break;
             case 2:
-                address = relative_base + dynamic_memory[instruction_pointer + offset];
+                address = relative_base + memory[instruction_pointer + offset];
                 break;
             default:
                 std::cout << "Invalid parameter mode " << mode << std::endl;
@@ -194,23 +184,23 @@ private:
     }
 
     void pause() {
-        running = false;
-        input_index = 0;
+        paused = true;
     }
-
+    void resume() {
+        paused = false;
+    }
     void halt() {
-        input_index = 0;
-        running = false;
         halted = true;
     }
 
     void allocate_memory(int a) {
-        if(a > dynamic_memory.size()) {
-            int temp = a - dynamic_memory.size();
+        if(a > memory.size()) {
+            int temp = a - memory.size();
             for(int i = 0; i < temp; ++i) {
-                dynamic_memory.push_back(0);
+                memory.push_back(0);
             }
         }
     }
+
 };
 #endif

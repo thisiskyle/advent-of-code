@@ -4,6 +4,14 @@
 #include "./headers/aoc.h"
 
 int main() {
-    Intcode_Computer computer("./inputs/day5.txt", false, true);
+    // part 1
+    Intcode_Computer computer("./inputs/day5.txt");
+    computer.add_input(1);
+    computer.run();
+
+    // part 2
+    computer.reset();
+    computer.add_input(5);
+    computer.run();
     return 0;
 }
