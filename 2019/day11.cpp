@@ -6,8 +6,9 @@
 struct Robot {
     Intcode_Computer brain{"./inputs/day11.txt"};
     std::vector<util::Point> white_panels;
-    std::vector<util::Point> visited;
+    std::vector<util::Point> black_panels;
     util::Point pos;
+    int rotation = 90;
 
     Robot() {
         pos = util::Point{0, 0};
@@ -18,54 +19,51 @@ struct Robot {
         long long int out;
 
         // get current panel color
-        int current_panel;
-        if(util::find_index_of<util::Point>(white_panels, pos) == -1) {
-            current_panel = 0;
+        // feed it as input
+        // handle first output, the new color 0: black 1: white
+        // handle second output, rotation 0: left 1: right
+    }
+    
+    // 0: black 1: white
+    int get_current_panel() {
+        if(util::contains<Point>(white_panels, pos)) {
+            return 1;
         }
-        else current_panel = 1;
-
-        brain.add_input(current_panel);
-
-        // handle first output, the new color
-        // 0: black
-        // 1: white
-        brain.run(true, &out);
-        if(out == 1) {
-            if(util::find_index_of<util::Point>(white_panels, pos) == -1) {
-                white_panels.push_back(pos);
-            }
+        if(util::contains<Point>(black_panels, pos)) { 
+            return 0;
         }
-        else {
-            int i = util::find_index_of<util::Point>(white_panels, pos);
-            if( i != -1) {
-                white_panels.erase(white_panels.begin() + i);
-            }
-        }
-
-        // handle second output, rotation
-        // 0: left
-        // 1: right
-        brain.step(&out);
-        if(out == 0) rotateL();
-        else rotateR();
+        return 0;
     }
 
-    int rotation = 90;
+    void paint_white() {
+        // check both color lists for the current panel
+        // change color if needed
+        // remove from old color and add to new color
+        // or just add to color if not found in either
+
+    }
+
+    void paint_black() { 
+        // check both color lists for the current panel
+        // change color if needed
+        // remove from old color and add to new color
+        // or just add to color if not found in either
+    } 
 
     void rotateR() {
         rotation -= 90;
         if(rotation < 0) {
             rotation = 360 + rotation;
         }
-        move();
     }
+
     void rotateL() {
         rotation += 90;
         if(rotation > 360) {
             rotation -= 360;
         }
-        move();
     }
+
     void move() {
         switch(rotation) {
             case 90:
@@ -81,10 +79,8 @@ struct Robot {
                 ++pos.x;
                 break;
         }
-        if(util::find_index_of<util::Point>(visited, pos) == -1) {
-            visited.push_back(pos);
-        }
     }
+
     bool is_done() {
         return brain.is_halted();
     }
@@ -94,7 +90,6 @@ struct Robot {
 
 int main() {
     Robot robot;
-
 
     while(!robot.is_done()) {
         robot.update();

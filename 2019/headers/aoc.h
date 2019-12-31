@@ -95,14 +95,17 @@ namespace util {
 
     template <typename T>
     int find_index_of(const std::vector<T>& v, const T& element) {
-        std::pair<bool, int > result;
         auto it = std::find(v.begin(), v.end(), element);
-
         if (it != v.end())
         {
             return distance(v.begin(), it);
         }
         return -1;
+    }
+    template <typename T>
+    int contains(const std::vector<T>& v, const T& element) {
+        auto it = std::find(v.begin(), v.end(), element);
+        return it != v.end();
     }
     
     struct Point {
