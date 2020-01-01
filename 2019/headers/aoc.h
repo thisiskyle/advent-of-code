@@ -107,6 +107,12 @@ namespace util {
         auto it = std::find(v.begin(), v.end(), element);
         return it != v.end();
     }
+    template <typename T>
+    void remove_element(std::vector<T>& v, const T& element) {
+        int index = find_index_of(v, element);
+        if(index == -1) return;
+        v.erase(v.begin() + index);
+    }
     
     struct Point {
         int x, y;

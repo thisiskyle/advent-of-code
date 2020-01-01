@@ -55,6 +55,9 @@ public:
                     memory[get_parameter_address(parameter_modes[0], 1)] = input_buffer[0];
                     input_buffer.erase(input_buffer.begin());
                 }
+                else {
+                    std::cout << "Error: no inputs in buffer" << std::endl;
+                }
                 instruction_pointer += 2;
                 break;
 
@@ -64,7 +67,6 @@ public:
 
                 instruction_pointer += 2;
                 if(pause_on_out) pause();
-
                 break;
 
             case 5:
