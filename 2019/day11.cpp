@@ -11,9 +11,14 @@ struct Robot {
     std::vector<util::Point> painted;
     util::Point pos;
     int rotation = 90;
+    int min_x = 0;
+    int max_x = 0;
+    int min_y = 0;
+    int max_y = 0;
 
-    Robot() {
+    Robot(int part) {
         pos = util::Point{0, 0};
+        if(part == 2) white.push_back(pos);
     }
 
     void update() {
@@ -82,7 +87,7 @@ struct Robot {
 
     void rotateL() {
         rotation += 90;
-        if(rotation > 360) {
+        if(rotation >= 360) {
             rotation -= 360;
         }
     }
@@ -91,38 +96,56 @@ struct Robot {
         switch(rotation) {
             case 90:
                 ++pos.y;
+                max_y = pos.y > max_y ? pos.y : max_y;
                 break;
             case 180:
                 --pos.x;
+                min_x = pos.x < min_x ? pos.x : min_x;
                 break;
             case 270:
                 --pos.y;
+                min_y = pos.y < min_y ? pos.y : min_y;
                 break;
             case 0:
-            case 360:
                 ++pos.x;
+                max_x = pos.x > max_x ? pos.x : max_x;
                 break;
         }
+
     }
 
     bool is_done() {
         return brain.is_halted();
     }
+
+    void render() {
+        for(int y = max_y; y >= min_y; --y) {
+            for(int x = min_x; x <= max_x; ++x) {
+                if(util::contains(white, util::Point(x,y))) {
+                    std::cout << "1";
+                }
+                else {
+                    std::cout << " ";
+                }
+            }
+            std::cout << "\n";
+        }
+    }
 };
 
-
-
 int main() {
-    Robot robot;
-
+    Robot robot(1);
     while(!robot.is_done()) {
         robot.update();
     }
-
-    std::cout << robot.painted.size() << std::endl;
-
+    std::cout << "part 1: " << robot.painted.size() << std::endl;
+    std::cout << "part 2: " << std::endl;
+    Robot robot2(2);
+    while(!robot2.is_done()) {
+        robot2.update();
+    }
+    robot2.render();
     return 0;
 }
-
 
 
