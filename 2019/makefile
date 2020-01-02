@@ -1,3 +1,8 @@
+12:
+	@echo ---------- Day 12
+	@g++ ./day12.cpp
+	@./a.exe
+	
 11:
 	@echo ---------- Day 11
 	@g++ ./day11.cpp

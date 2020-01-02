@@ -117,7 +117,10 @@ namespace util {
     struct Point {
         int x, y;
 
-        Point() { } 
+        Point() {  
+            this->x = 0;
+            this->y = 0;
+        }
         Point(int x, int y) {
             this->x = x;
             this->y = y;
@@ -128,6 +131,51 @@ namespace util {
         }
         bool operator!=(const Point &other) const {
             return !(x == other.x && y == other.y);
+        }
+        Point operator+(const Point &other) const {
+            Point p(x + other.x, y + other.y);
+            return p;
+        }
+        Point operator-(const Point &other) const {
+            Point p(x - other.x, y - other.y);
+            return p;
+        }
+    };
+
+    struct Point3 {
+        int x, y, z;
+
+        Point3() {
+            this->x = 0;
+            this->y = 0;
+            this->z = 0;
+
+        } 
+        Point3(int x, int y, int z) {
+            this->x = x;
+            this->y = y;
+            this->z = z;
+        }
+
+        bool operator==(const Point3& other) const {
+            return x == other.x && y == other.y && z == other.z;
+        }
+        bool operator!=(const Point3& other) const {
+            return !(x == other.x && y == other.y && z == other.z);
+        }
+        Point3 operator+(const Point3& other) const {
+            Point3 p(x + other.x, y + other.y, z + other.z);
+            return p;
+        }
+        Point3 operator-(const Point3& other) const {
+            Point3 p(x - other.x, y - other.y, z - other.z);
+            return p;
+        }
+        Point3& operator+=(const Point3& other) {
+            this->x += other.x;
+            this->y += other.y;
+            this->z += other.z;
+            return *this;
         }
     };
 }
