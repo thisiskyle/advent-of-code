@@ -113,6 +113,22 @@ namespace util {
         if(index == -1) return;
         v.erase(v.begin() + index);
     }
+    long long int gcd(long long int a, long long int b) {
+        if (b == 0) return a; 
+        return gcd(b, a % b);
+    }
+
+    long long int lcm(long long int a, long long int b) {
+        return (a * b) / gcd(a, b);
+    }
+    int gcd(int a, int b) {
+        if (b == 0) return a; 
+        return gcd(b, a % b);
+    }
+
+    int lcm(int a, int b) {
+        return (a * b) / gcd(a, b);
+    }
     
     struct Point {
         int x, y;
@@ -141,7 +157,6 @@ namespace util {
             return p;
         }
     };
-
     struct Point3 {
         int x, y, z;
 
