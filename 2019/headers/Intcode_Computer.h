@@ -109,12 +109,15 @@ public:
         halted = false;
         paused = false;
         relative_base = 0;
-        input_buffer.clear();
+        clean_input();
     }
 
     // specific for use with day 2
     int get_output() {
         return memory[0];
+    }
+    void set_memory_position(int position, int value) {
+        memory[position] = value;
     }
     // specific for use with day 2
     void insert_noun_and_verb(long long int noun, long long int verb) {
@@ -132,6 +135,16 @@ public:
         input_buffer.push_back(input);
     }
     void add_input(std::vector<long long int> input) {
+        for(auto i : input) {
+            input_buffer.push_back(i);
+        }
+    }
+    void add_input_clean(long long int input) {
+        clean_input();
+        input_buffer.push_back(input);
+    }
+    void add_input_clean(std::vector<long long int> input) {
+        clean_input();
         for(auto i : input) {
             input_buffer.push_back(i);
         }
@@ -202,6 +215,9 @@ private:
                 memory.push_back(0);
             }
         }
+    }
+    void clean_input() {
+        input_buffer.clear();
     }
 
 };
