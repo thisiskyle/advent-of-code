@@ -5,6 +5,7 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include <windows.h>
 #include <algorithm>
 
 namespace util {
@@ -169,7 +170,7 @@ namespace util {
     double delta_time(int fps) {
         return (1000 / fps);
     }
-    
+
     struct Point {
         int x, y;
 
