@@ -31,40 +31,44 @@ struct element {
         int amount_needed = 0;
         int reactions = 0;
         int overbuild = 0;
-        int cost_to_produce = 0;
 
-        std::cout << "Requesting " << amount_requested << " " << id << " with " << stored << " in storage\n";
+        std::cout << id << " requested: " << amount_requested << "\n";
+        std::cout << id << " in storage: " << stored << "\n";
 
-        if(stored != 0) {
-            if(amount_requested > stored){
-                amount_needed = amount_requested - stored;
-                stored = 0;
-            }
-            else if(stored > amount_requested) {
-                stored -= amount_requested;
-            }
+        if(stored > amount_requested) {
+            stored -= amount_requested;
+            amount_needed = 0;
         }
-        else amount_needed = amount_requested;
+        else if(stored < amount_requested) {
+            amount_needed = amount_requested - stored;
+            stored = 0;
+        }
+        std::cout << id << " still needed: " << amount_needed << "\n";
 
         if(amount_needed > 0) {
             reactions = std::ceil((float)amount_needed / (float)base_amount);
-            overbuild = base_amount * reactions - amount_needed;
+            overbuild = reactions * base_amount - amount_needed;
         }
-
-        std::cout << amount_needed << " " << id << " still needed\n";
-        std::cout << reactions << " reactions will produce " << base_amount * reactions << " " << id << " with " << overbuild << " leftover\n";
+        std::cout << id << " reactions: " << reactions << "\n";
+        std::cout << id << " leftover: " << overbuild << "\n";
         store(overbuild);
 
+        // loop through all elements in recipe
         for(std::map<std::string, int>::iterator it = recipe.begin(); it != recipe.end(); ++it) {
             if(it->first == "ORE") {
                 base_ore_cost = it->second;
+                std::cout << id << " ore cost: " << base_ore_cost * reactions << "\n";
+                std::cout << id << " complete\n";
+                return base_ore_cost * reactions;
             }
             else {
-                base_ore_cost += (*elements)[it->first].get_ore_cost(it->second, elements);
+                int o = (*elements)[it->first].get_ore_cost(it->second * reactions, elements);
+                base_ore_cost += o;
             }
         }
-
-        return cost_to_produce * reactions;
+        std::cout << id << " ore cost: " << base_ore_cost << "\n";
+        std::cout << id << " complete\n";
+        return base_ore_cost;
     }
 };
 
@@ -99,6 +103,7 @@ void part1(std::string path) {
     std::vector<std::string> lines = util::read_file_by_line(path);
     std::map<std::string, element> elements;
     std::regex r("([0-9]+) ([A-Z]+)");
+
     // load element data
     for(auto s : lines) { load_elements(&elements, s, r); }
 
@@ -110,8 +115,10 @@ int main() {
     //part1("./inputs/day14.txt");
     
     //part1("./inputs/day14_t1.txt");
-    part1("./inputs/day14_t2.txt");
+    //part1("./inputs/day14_t2.txt");
     //part1("./inputs/day14_t3.txt");
+    part1("./inputs/day14_t4.txt");
+    //part1("./inputs/day14_t5.txt");
 
     return 0;
 }
