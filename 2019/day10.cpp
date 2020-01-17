@@ -73,7 +73,7 @@ int main() {
             station = a;
         }
     }
-    std::cout << "part 1: " << "Asteroid (" << station.x << ", " << station.y << ") " << "oberves " << c << std::endl;
+    std::cout << "part 1: " << "Asteroid (" << station.x << ", " << station.y << ") " << "observes " << c << std::endl;
 
     // part 2
     Asteroid target;

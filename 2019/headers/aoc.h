@@ -183,19 +183,29 @@ namespace util {
             this->y = y;
         }
 
-        bool operator==(const Point &other) const {
+        bool operator==(const Point& other) const {
             return x == other.x && y == other.y;
         }
-        bool operator!=(const Point &other) const {
+        bool operator!=(const Point& other) const {
             return !(x == other.x && y == other.y);
         }
-        Point operator+(const Point &other) const {
+        Point operator+(const Point& other) const {
             Point p(x + other.x, y + other.y);
             return p;
         }
-        Point operator-(const Point &other) const {
+        Point operator-(const Point& other) const {
             Point p(x - other.x, y - other.y);
             return p;
+        }
+        Point& operator+=(const Point& other) {
+            this->x += other.x;
+            this->y += other.y;
+            return *this;
+        }
+        Point& operator-=(const Point& other) {
+            this->x -= other.x;
+            this->y -= other.y;
+            return *this;
         }
     };
     struct Point3 {

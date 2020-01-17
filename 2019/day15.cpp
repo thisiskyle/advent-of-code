@@ -4,31 +4,33 @@
 #include "./headers/aoc.h"
 #include "./headers/Intcode_Computer.h"
 
-enum dir {
-    up = 1,
-    down,
-    left,
-    right
+
+int minx = 0;
+int miny = 0;
+int maxx = 0;
+int maxy = 0;
+
+struct direction {
+    static util::Point up;
+    static util::Point down;
+    static util::Point left;
+    static util::Point right;
 };
 
-enum tile_type {
-    wall,
-    walkable,
-    tank,
-    robot,
-    empty
-};
+util::Point direction::up = util::Point(0, 1);
+util::Point direction::down = util::Point(0, -1);
+util::Point direction::left = util::Point(-1, 0);
+util::Point direction::right = util::Point(1, 0);
 
 struct tile {
     bool visited = false;
-    tile_type type;
+    int type;
 
-    tile() { type = empty; }
-    tile(tile_type t) { type = t; }
-    tile(int t) { type = (tile_type)t; }
+    tile() { type = 0; }
+    tile(int t) { type = t; }
 
     std::string graphic() {
-        switch((int)type) {
+        switch(type) {
             case 0: return "#";
             case 1: return ".";
             case 2: return "O";
@@ -38,63 +40,94 @@ struct tile {
     }
 };
 
+
 struct droid {
     Intcode_Computer brain{"./inputs/day15.txt"};
     util::Point pos;
+    int last_command;
     int maxx, maxy, minx, miny;
     long long int* memory;
 
     droid(long long int* out) {
+        pos = util::Point();
         memory = out;
     }
 
-    void update(dir d) {
-        switch(d) {
-            case up: move_up(); break;
-            case down: move_down(); break;
-            case left: move_left(); break;
-            case right: move_right(); break;
-        }
+    void update(int d) {
+        brain.add_input_clean(d);
         brain.run(1, memory);
     }
 
-    void move_up() {
-        ++pos.y;
-        brain.add_input_clean(up);
+    void move(int d) {
+        switch(d) {
+            case 0: pos += direction::up; break;
+            case 1: pos += direction::down; break;
+            case 2: pos += direction::left; break;
+            case 3: pos += direction::right; break;
+        }
     }
-    void move_down() {
-        --pos.y;
-        brain.add_input_clean(down);
-    }
-    void move_left() {
-        --pos.x;
-        brain.add_input_clean(left);
-    }
-    void move_right() {
-        ++pos.x;
-        brain.add_input_clean(right);
+
+    void repeat() {
+        update(last_command);
     }
 };
 
+void HandleWall(int* next_command, std::map<util::Point, tile>* grid) {
+    // @todo update the grid
+    
+    ++(*next_command);
+    *next_command = *next_command > 4 ? 0 : *next_command;
+}
+
+void HandleOpen(int* next_command, droid* d, std::map<util::Point, tile>* grid) {
+    d->move(*next_command);
+    // @todo update the grid
+}
+
+void render(const std::map<util::Point, tile>& grid) {
+    for(int i = maxy; i >= miny; --i) {
+        for(int j = minx; i <= maxx; ++i) {
+
+            // @bug This doesnt work because grid.find() doesnt work with util::Point
+            std::map<util::Point, tile>::iterator it = grid.find(util::Point(j, i));
+
+            if(it != grid.end()) {
+                std::cout << it->second.graphic();
+            }
+            else {
+                std::cout << " ";
+            }
+        }
+        std::cout << "\n";
+    }
+}
+
 int main() {
-    int in;
-    int out;
+    long long int out;
+    int next_command = 0;
     std::map<util::Point, tile> grid;
+
     droid d(&out);
 
-    // initialize with and up command
-    d.update(up);
     while(1) {
-
-        // read out
-
-        // do some logic
-
+        // read output and do something with it
         // decide on a new input direction
-
-        // d.update(new input)
-
         // update the grid
+        d.update(next_command);
+
+        switch(out) {
+            case 0:
+                HandleWall(&next_command, &grid);
+                break;
+            case 1:
+                HandleOpen(&next_command, &d, &grid);
+                break;
+            case 2:
+                std::cout << "Oxygen tank found\n";
+                break;
+        }
+
+
     }
 
     return 0;
