@@ -30,33 +30,24 @@ int main() {
 
             int sum = a + b;
             
-            if(sum == 2020) {
+            if((a + b) == 2020) {
                 a1 = a * b;
-                break;
             }
-        }
-    }
 
-    // output answer 1
-    std::cout << "part 1: " << a1 << std::endl;
-
-    for(int i = 0; i < inputs.size(); ++i) {
-        for(int j = i + 1; j < inputs.size(); ++j) {
             for(int k = j + 1; k < inputs.size(); ++k) {
 
-                int a = inputs[i];
-                int b = inputs[j];
                 int c = inputs[k];
-
-                int sum = a + b + c;
                 
-                if(sum == 2020) {
+                if((a + b + c) == 2020) {
                     a2 = a * b * c;
                     break;
                 }
             }
         }
     }
+
+    // output answer 1
+    std::cout << "part 1: " << a1 << std::endl;
 
     // output answer 2
     std::cout << "part 2: " << a2 << std::endl;
