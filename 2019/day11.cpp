@@ -1,8 +1,8 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include "./headers/aoc.h"
-#include "./headers/Intcode_Computer.h"
+#include "../headers/aoc.h"
+#include "../headers/Intcode_Computer.h"
 
 struct Robot {
     Intcode_Computer brain{"./inputs/day11.txt"};

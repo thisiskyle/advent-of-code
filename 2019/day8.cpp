@@ -1,7 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include "./headers/aoc.h"
+#include "../headers/aoc.h"
 
 int w = 25;
 int h = 6;

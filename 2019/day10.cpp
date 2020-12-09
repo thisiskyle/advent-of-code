@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <math.h>
 #include <float.h>
-#include "./headers/aoc.h"
+#include "../headers/aoc.h"
 
 #define PI 3.14159265
 

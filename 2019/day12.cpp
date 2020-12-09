@@ -5,7 +5,7 @@
 #include <string>
 #include <cstdlib>
 #include <numeric>
-#include "./headers/aoc.h"
+#include "../headers/aoc.h"
 
 
 struct Moon {

@@ -6,7 +6,7 @@
 #include <map>
 #include <algorithm>
 #include <math.h>
-#include "./headers/aoc.h"
+#include "../headers/aoc.h"
 
 struct element {
 

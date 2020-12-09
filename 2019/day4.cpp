@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <chrono>
-#include "./headers/aoc.h"
+#include "../headers/aoc.h"
 
 
 bool check_doubles(const std::string &s) {

@@ -5,45 +5,24 @@
 #include <vector>
 #include <sstream>
 #include <string>
-#include <windows.h>
 #include <algorithm>
 
 namespace util {
 
     void clear_screen() {
-        HANDLE                     hStdOut;
-        CONSOLE_SCREEN_BUFFER_INFO csbi;
-        DWORD                      count;
-        DWORD                      cellCount;
-        COORD                      homeCoords = { 0, 0 };
+        std::cout << std::string(100, '\n');
+    }
 
-        hStdOut = GetStdHandle( STD_OUTPUT_HANDLE );
-        if (hStdOut == INVALID_HANDLE_VALUE) return;
+    int sum_of_digits(int n) {
+        int sum = 0;
 
-        /* Get the number of cells in the current buffer */
-        if (!GetConsoleScreenBufferInfo( hStdOut, &csbi )) return;
-        cellCount = csbi.dwSize.X *csbi.dwSize.Y;
+        while(n > 0) {
+            int m = n % 10;
+            sum += m;
+            n /= 10;
+        }
 
-        /* Fill the entire buffer with spaces */
-        if (!FillConsoleOutputCharacter(
-        hStdOut,
-        (TCHAR) ' ',
-        cellCount,
-        homeCoords,
-        &count
-        )) return;
-
-        /* Fill the entire buffer with the current colors and attributes */
-        if (!FillConsoleOutputAttribute(
-        hStdOut,
-        csbi.wAttributes,
-        cellCount,
-        homeCoords,
-        &count
-        )) return;
-
-        /* Move the cursor home */
-        SetConsoleCursorPosition( hStdOut, homeCoords );
+        return sum;
     }
 
     std::ifstream read_file(std::string input_path) {
@@ -89,6 +68,7 @@ namespace util {
         return string_list;
     }
 
+    // turns a vector or strings into a vector of ints
     void v_stoi(std::vector<std::string> s, std::vector<int>* out) {
         for(auto i : s) {
             out->push_back(std::stoi(i));

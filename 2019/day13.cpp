@@ -1,8 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "./headers/aoc.h"
-#include "./headers/Intcode_Computer.h"
+#include <unistd.h>
+#include "../headers/aoc.h"
+#include "../headers/Intcode_Computer.h"
 
 std::string get_tile(int n) {
     switch(n) {
@@ -26,7 +27,7 @@ void draw(std::vector<std::vector<int>>& screen, int score) {
     }
     std::cout << display;
     std::cout << "Score: " << score << "\n";
-    Sleep(5);
+    usleep(5 * 1000);
 }
 
 int main() {

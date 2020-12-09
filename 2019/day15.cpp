@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include "./headers/aoc.h"
-#include "./headers/Intcode_Computer.h"
+#include "../headers/aoc.h"
+#include "../headers/Intcode_Computer.h"
 
 
 int minx = 0;

@@ -3,7 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
-#include "./headers/aoc.h"
+#include "../headers/aoc.h"
 
 std::vector<std::string> map_the_path(const std::map<std::string, std::string>& map_from, std::string _key) {
     std::string key = _key;

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include "./headers/Intcode_Computer.h"
+#include "../headers/Intcode_Computer.h"
 
 int main() {
 
