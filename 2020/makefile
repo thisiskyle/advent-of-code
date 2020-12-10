@@ -2,7 +2,12 @@ CC = g++
 
 .PHONY = clean
 
-day1: day1.cpp
+1: day1.cpp
+	@echo ---------- $@
+	$(CC) $< -o ./$@.out
+	./$@.out
+
+2: day2.cpp
 	@echo ---------- $@
 	$(CC) $< -o ./$@.out
 	./$@.out

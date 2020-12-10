@@ -25,6 +25,16 @@ namespace util {
         return sum;
     }
 
+    void print_answers(int a1, int a2) {
+        std::cout << "part 1: " << a1 << std::endl;
+        std::cout << "part 2: " << a2 << std::endl;
+    }
+
+    void print_answers(std::string a1, std::string a2) {
+        std::cout << "part 1: " << a1 << std::endl;
+        std::cout << "part 2: " << a2 << std::endl;
+    }
+
     std::ifstream read_file(std::string input_path) {
         std::ifstream input_file;
         input_file.open(input_path);
