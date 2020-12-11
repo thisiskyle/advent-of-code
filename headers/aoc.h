@@ -25,11 +25,13 @@ namespace util {
         return sum;
     }
 
+    // shouldnt use these
     void print_answers(int a1, int a2) {
         std::cout << "part 1: " << a1 << std::endl;
         std::cout << "part 2: " << a2 << std::endl;
     }
 
+    // shouldnt use these
     void print_answers(std::string a1, std::string a2) {
         std::cout << "part 1: " << a1 << std::endl;
         std::cout << "part 2: " << a2 << std::endl;
