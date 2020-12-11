@@ -12,6 +12,10 @@ CC = g++
 	$(CC) $< -o ./$@.out
 	./$@.out
 
+3: day3.cpp
+	@echo ---------- $@
+	$(CC) $< -o ./$@.out
+	./$@.out
 
 clean: 
 	rm -f ./*.out
