@@ -13,9 +13,7 @@ session_file.close()
 
 def get_input(day, year):
 
-    if os.path.exists("./inputs/" + str(day) + ".txt"):
-        print("Input found")
-    else:
+    if not (os.path.exists("./inputs/" + str(day) + ".txt")):
         print("Requesting input")
         URL = base_URL + str(year) + "/day/" + str(day) + "/input"
         r = requests.get(URL, cookies=cookie)
@@ -37,7 +35,6 @@ def get_input(day, year):
 
 
 def submit(day, year, level, answer):
-    print("Submitting Answer: " + str(answer))
     URL = base_URL + str(year) + "/day/" + str(day) + "/answer"
 
     d={'level': level, 'answer': answer}
@@ -45,8 +42,8 @@ def submit(day, year, level, answer):
     r = requests.post(URL, data=d, cookies=cookie)
 
     if (r.text.find("That's the right answer!")):
-        print(f"Answer {answer} for level {level} is correct!")
+        print(f"Level {level}: {answer} is correct")
 
     elif (r.text.find("That's not the right answer.")):
-        print(f"Answer {answer} for level {level} is incorrect")
+        print(f"Level {level}: {answer} is incorrect")
 

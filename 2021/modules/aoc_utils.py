@@ -12,13 +12,15 @@ def run_test(day, year, test_inputs, outputs, callback):
 
 
 
-def solve_and_submit(day, year, callback):
+def run_solution(day, year, callback):
+    input_actual = api.get_input(day, year)
+    return callback(input_actual)
 
-        input_actual = api.get_input(day, year)
-        answer = callback(input_actual)
 
-        for i in range(len(answer)):
-            api.submit(day, year, (i + 1), answer[i])
+
+def submit_solution(day, year, answer):
+    for i in range(len(answer)):
+        api.submit(day, year, (i + 1), answer[i])
 
 
 
@@ -30,8 +32,7 @@ def test_and_submit(day, year, test_inputs, outputs, callback):
         if not r:
             return
 
-
-    solve_and_submit(day, year, callback)
+    submit_solution(day, year, run_solution(day, year, callback))
 
 
 
