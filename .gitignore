@@ -1,4 +1,6 @@
+session_id
 doc/
+__pycache__/
 
 # Prerequisites
 *.d

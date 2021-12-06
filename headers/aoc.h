@@ -86,6 +86,8 @@ namespace util {
             out->push_back(std::stoi(i));
         }
     }
+
+    // turns a vector or strings into a vector of ints
     std::vector<int> v_stoi(std::vector<std::string> s) {
         std::vector<int> out;
         for(auto i : s) {
@@ -93,6 +95,8 @@ namespace util {
         }
         return out;
     }
+
+    // vector of strings to long ints
     void v_stoli(std::vector<std::string> s, std::vector<long int>* out) {
         for(auto i : s) {
             out->push_back(std::stol(i));
