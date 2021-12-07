@@ -13,6 +13,8 @@ session_file.close()
 
 def get_input(day, year):
 
+    print("\nSearching for input")
+
     if not (os.path.exists("./inputs/" + str(day) + ".txt")):
         print("Requesting input")
         URL = base_URL + str(year) + "/day/" + str(day) + "/input"
@@ -20,13 +22,15 @@ def get_input(day, year):
         file = open(f"./inputs/{str(day)}.txt", "w")
         file.write(r.text)
         file.close()
+    else:
+        print("Input found")
 
     inputs = []
 
     file = open(f"./inputs/{str(day)}.txt")
 
     for line in file:
-        inputs.append(line)
+        inputs.append(line.rstrip('\n'))
 
     file.close()
     return inputs
@@ -35,15 +39,18 @@ def get_input(day, year):
 
 
 def submit(day, year, level, answer):
+
+
     URL = base_URL + str(year) + "/day/" + str(day) + "/answer"
 
     d={'level': level, 'answer': answer}
 
     r = requests.post(URL, data=d, cookies=cookie)
 
-    if (r.text.find("That's the right answer!")):
+    if (r.text.find("That's the right answer!") != -1):
         print(f"Level {level}: {answer} is correct")
 
-    elif (r.text.find("That's not the right answer.")):
+    elif (r.text.find("That's not the right answer.") != -1):
         print(f"Level {level}: {answer} is incorrect")
+
 

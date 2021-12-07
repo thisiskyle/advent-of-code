@@ -1,40 +1,8 @@
-from modules import tester
-from modules import aocapi as aoc
-
-
-day = 2
-year = 2021
-
-input_actual = aoc.get_input(day, year)
-
-input_test = [
-    "forward 5",
-    "down 5",
-    "forward 8",
-    "up 3",
-    "down 8",
-    "forward 2"
-]
-
-def test_and_submit(submit_flag=0):
-    if(tester.run_test(input_test, 150, 1, callback=run)):
-        answer = run(input_actual)
-
-        if(submit_flag): 
-            aoc.submit(day, year, 1, answer[0])
-        else:
-            print(f"part 1: {answer[0]}")
-
-        if(tester.run_test(input_test, 900, 2, callback=run)):
-
-            if(submit_flag): 
-                aoc.submit(day, year, 1, answer[1])
-            else:
-                print(f"part 2: {answer[1]}")
+from modules import aoc_utils
 
 
 
-def run(inputs):
+def solution(inputs):
     x = 0
     y = 0
     y2 = 0
@@ -63,8 +31,10 @@ def run(inputs):
 
 
 
-test_and_submit()
 
+test_input = [ "forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2" ]
+test_expected = [150, 900]
 
+aoc_utils.test_solution(test_input, test_expected, callback=solution, submit_flag=0, day=2, year=2021)
 
 

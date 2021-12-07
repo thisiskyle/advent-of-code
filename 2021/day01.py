@@ -34,6 +34,7 @@ def solution(inputs):
 
 
 
-input_test = [199, 200, 208, 210, 200, 207, 240, 269, 260, 263]
+test_input = [199, 200, 208, 210, 200, 207, 240, 269, 260, 263]
+test_expected = [7, 5] 
 
-aoc_utils.test_and_submit(1, 2021, input_test, [7, 5], solution)
+aoc_utils.test_solution(test_input, test_expected, callback=solution, submit_flag=0, day=1, year=2021)
