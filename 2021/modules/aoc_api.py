@@ -48,9 +48,10 @@ def submit(day, year, level, answer):
     r = requests.post(URL, data=d, cookies=cookie)
 
     if (r.text.find("That's the right answer!") != -1):
-        print(f"Level {level}: {answer} is correct")
-
+        print(f"Day {day} level {level}: {answer} is correct")
     elif (r.text.find("That's not the right answer.") != -1):
-        print(f"Level {level}: {answer} is incorrect")
+        print(f"Day {day} level {level}: {answer} is incorrect")
+    elif (r.text.find("Did you already complete it?") != -1):
+        print(f"Day {day} level {level}: Already Solved")
 
 
