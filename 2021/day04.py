@@ -7,6 +7,10 @@ board_h = 5
 board_list = []
 numbers = []
 
+# access the index of the board via coords
+def getIndex(x, y):
+    return (y * board_w) + x
+
 
 def solution(inputs):
 
@@ -14,32 +18,27 @@ def solution(inputs):
     for n in inputs[0].split(","):
         numbers.append(int(n))
 
+    # turn the rest of the input into something useful
     t = []
-    for j in range(1, len(inputs) - 1):
+    for j in range(1, len(inputs)):
         for k in inputs[j].split(" "):
             if not k == '':
                 t.append(int(k))
 
 
-    for i in range(0, len(inputs) - 1, 5):
+    # load the input into boards
+    # a 1D array for each board
+    for i in range(0, len(t) - 1, board_w * board_h):
         temp = []
-        temp.append(t[i])
-        temp.append(t[i+1])
-        temp.append(t[i+2])
-        temp.append(t[i+3])
-        temp.append(t[i+4])
+        for j in range(i, i + 24, 1):
+            temp.append(t[j])
+
+
         board_list.append(temp)
 
-
-
-
-    print(board_list)
-    print(numbers)
+    print(board_list[0][getIndex(0,4)])
 
     return [0]
-
-
-
 
 
 test_input = [ 
