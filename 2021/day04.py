@@ -5,11 +5,52 @@ from modules import aoc_api as api
 board_w = 5
 board_h = 5
 board_list = []
+marked_board_list = []
 numbers = []
 
 # access the index of the board via coords
 def getIndex(x, y):
     return (y * board_w) + x
+
+
+def checkBingo(boards, marked_boards):
+    # for each board
+    for b in range(0, len(marked_boards)):
+
+        # for each index on the board
+        for i in range(0, board_w - 1):
+            sumRow = marked_boards[b][i] + marked_boards[b][i + 1] + marked_boards[b][i + 2] + marked_boards[b][i + 3] + marked_boards[b][i + 4]
+            sumCol = marked_boards[b][i] + marked_boards[b][i + (5 * 1)] + marked_boards[b][i + (5 * 2)] + marked_boards[b][i + (5 * 3)] + marked_boards[b][i + (5 * 4)]
+
+            if sumRow == 5 or sumCol == 5:
+                return b
+    return -1
+
+
+def checkMatches(boards, marked_boards, nums):
+
+    # for each number drawn
+    for n in range(0, len(numbers)):
+
+        # for each board
+        for b in range(0, len(boards)):
+
+            # for each index on the board
+            for i in range(0, len(boards[0])):
+                if boards[b][i] == numbers[n]:
+                    marked_boards[b][i] = 1
+
+
+        winner = checkBingo(boards, marked_boards)
+        if winner >= 0:
+            return (winner, numbers[n])
+
+def calcSumOfUnmarked(board, marked_board, lastNum):
+    # add up all unmarked numbers
+    sum = 0
+
+    # multiply sum with last number called before bingo
+    return sum * lastNum
 
 
 def solution(inputs):
@@ -30,15 +71,21 @@ def solution(inputs):
     # a 1D array for each board
     for i in range(0, len(t) - 1, board_w * board_h):
         temp = []
+        temp_marked = []
         for j in range(i, i + 24, 1):
             temp.append(t[j])
+            temp_marked.append(0)
 
 
         board_list.append(temp)
+        marked_board_list.append(temp_marked)
 
-    print(board_list[0][getIndex(0,4)])
 
-    return [0]
+    winner_info = checkMatches(board_list, marked_board_list, numbers)
+
+    a1 = calcSumOfUnmarked(board_list[winner_info[0], marked_board_list[winner_info[0], winner_info[1])
+
+    return [a1]
 
 
 test_input = [ 
