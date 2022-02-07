@@ -19,6 +19,7 @@ def test_solution(input, expected, callback, submit_flag=0, day=0, year=0):
             return
 
         answers = callback(api.get_input(day, year))
+        print(f"\nAnswers: {answers}")
 
         print("\nSubmitting answers\n")
         for r in range(len(test_results)):

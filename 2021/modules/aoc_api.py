@@ -47,11 +47,15 @@ def submit(day, year, level, answer):
 
     r = requests.post(URL, data=d, cookies=cookie)
 
-    if (r.text.find("That's the right answer!") != -1):
+    if (r.text.find("That's the right answer") != -1):
         print(f"Day {day} level {level}: {answer} is correct")
-    elif (r.text.find("That's not the right answer.") != -1):
+    elif (r.text.find("That's not the right answer") != -1):
         print(f"Day {day} level {level}: {answer} is incorrect")
-    elif (r.text.find("Did you already complete it?") != -1):
+    elif (r.text.find("answer too recently") != -1):
+        print(f"Day {day} level {level}: Answered too recently, please wait")
+    elif (r.text.find("Did you already complete it") != -1):
         print(f"Day {day} level {level}: Already Solved")
+    else:
+        print(f"Day {day} level {level}: Something went wrong when submitting")
 
 

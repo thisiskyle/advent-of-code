@@ -48,6 +48,9 @@ def checkMatches(boards, marked_boards, nums):
 def calcSumOfUnmarked(board, marked_board, lastNum):
     # add up all unmarked numbers
     sum = 0
+    for b in range(0, len(board)):
+        if not marked_board[b]:
+            sum += board[b]
 
     # multiply sum with last number called before bingo
     return sum * lastNum
@@ -62,17 +65,20 @@ def solution(inputs):
     # turn the rest of the input into something useful
     t = []
     for j in range(1, len(inputs)):
+        if not inputs[j]:
+            continue
         for k in inputs[j].split(" "):
             if not k == '':
                 t.append(int(k))
 
 
+
     # load the input into boards
     # a 1D array for each board
-    for i in range(0, len(t) - 1, board_w * board_h):
+    for i in range(0, len(t), board_w * board_h):
         temp = []
         temp_marked = []
-        for j in range(i, i + 24, 1):
+        for j in range(i, i + 25, 1):
             temp.append(t[j])
             temp_marked.append(0)
 
@@ -80,10 +86,9 @@ def solution(inputs):
         board_list.append(temp)
         marked_board_list.append(temp_marked)
 
-
     winner_info = checkMatches(board_list, marked_board_list, numbers)
 
-    a1 = calcSumOfUnmarked(board_list[winner_info[0], marked_board_list[winner_info[0], winner_info[1])
+    a1 = calcSumOfUnmarked(board_list[winner_info[0]], marked_board_list[winner_info[0]], winner_info[1])
 
     return [a1]
 
@@ -107,6 +112,7 @@ test_input = [
     " 2  0 12  3  7"
 ]
 
-test_expected = [0]
+test_expected = [4512]
 
 aoc_utils.test_solution(test_input, test_expected, callback=solution, submit_flag=0, day=4, year=2021)
+#aoc_utils.test_with_real_inputs(4, 2021, callback=solution)
