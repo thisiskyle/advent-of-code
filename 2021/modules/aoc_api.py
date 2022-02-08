@@ -6,7 +6,7 @@ import os.path
 base_URL = "https://adventofcode.com/"
 
 session_file = open("./session_id")
-cookie = {'session': session_file.readline()}
+cookie = {'session': session_file.readline().rstrip("\n")}
 session_file.close()
 
 
@@ -40,7 +40,6 @@ def get_input(day, year):
 
 def submit(day, year, level, answer):
 
-
     URL = base_URL + str(year) + "/day/" + str(day) + "/answer"
 
     d={'level': level, 'answer': answer}
@@ -57,5 +56,3 @@ def submit(day, year, level, answer):
         print(f"Day {day} level {level}: Already Solved")
     else:
         print(f"Day {day} level {level}: Something went wrong when submitting")
-
-
