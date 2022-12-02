@@ -242,5 +242,4 @@ namespace util {
     };
 }
 
-
 #endif
