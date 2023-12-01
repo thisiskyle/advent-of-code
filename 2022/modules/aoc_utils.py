@@ -1,7 +1,7 @@
 from modules import aoc_api as api
 
 
-def test_solution(input, expected, callback, day=0, year=0):
+def test_solution(input, expected, callback):
     test_results = []
     test_answers = callback(input)
     to_return = True

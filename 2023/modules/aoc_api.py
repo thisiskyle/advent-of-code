@@ -1,5 +1,6 @@
 import requests
 import os.path
+import os
 
 
 base_URL = "https://adventofcode.com/"
@@ -9,6 +10,10 @@ session_file.close()
 
 
 def get_input(day, year):
+    if not (os.path.exists("./inputs/")):
+        print("\nCreating input directory")
+        os.mkdir("./inputs/")
+
     if not (os.path.exists("./inputs/" + str(day) + ".txt")):
         print(f"\nRequesting day {day} input")
         URL = base_URL + str(year) + "/day/" + str(day) + "/input"
@@ -29,10 +34,9 @@ def get_input(day, year):
     return inputs
 
 
-
 def submit(day, year, level, answer):
     URL = base_URL + str(year) + "/day/" + str(day) + "/answer"
-    d={'level': level, 'answer': answer}
+    d = {'level': level, 'answer': answer}
     r = requests.post(URL, data=d, cookies=cookie)
 
     # pass
@@ -47,13 +51,3 @@ def submit(day, year, level, answer):
     # ???
     else:
         print(r.text)
-
-
-
-
-
-
-
-
-
-
