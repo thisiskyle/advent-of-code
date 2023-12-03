@@ -16,7 +16,7 @@ def submit(day, year, level, callback):
         return
 
     answer = callback(api.get_input(day, year))
-    print(f"\nSubmitting {year} day {day}, level: {level}: {answer}\n")
+    print(f"\nSubmitting {year} day {day}, part {level}: {answer}\n")
     api.submit(day, year, level, answer)
 
 
