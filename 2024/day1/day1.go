@@ -1,22 +1,18 @@
-package day1
+package main
 
 import (
     "sort"
     "strings"
     "strconv"
     "2024/utils"
+	"fmt"
 )
 
 
-var Day int = 1
-
-func Run(input []string, part int) int {
-    if(part == 1) {
-        return part1(input)
-    } else if(part == 2) {
-        return part2(input)
-    }
-    return 0
+func main() {
+    var input = utils.GetInput("./day1/input")
+    fmt.Println(fmt.Sprintf("Day 1 Part 1: %d", part1(input)))
+    fmt.Println(fmt.Sprintf("Day 1 Part 2: %d", part2(input)))
 }
 
 func formatInput(input []string) ([]int, []int) {

@@ -6,10 +6,10 @@ import (
     "os"
 )
 
-func GetInput(day int) []string {
+func GetInput(path string) []string {
     var input []string
 
-    file, err := os.Open(fmt.Sprintf("./inputs/%d.input", day))
+    file, err := os.Open(path)
     if(err != nil) {
         fmt.Println("something went wrong reading input")
     }
@@ -21,23 +21,6 @@ func GetInput(day int) []string {
     }
     return input
 }
-
-func GetTestInput(day int) []string {
-    var input []string
-
-    file, err := os.Open(fmt.Sprintf("./inputs/%d.test", day))
-    if(err != nil) {
-        fmt.Println("something went wrong reading input")
-    }
-    defer file.Close()
-
-    scanner := bufio.NewScanner(file)
-    for scanner.Scan() {
-        input = append(input, scanner.Text())
-    }
-    return input
-}
-
 
 func Abs(n int) int {
     if(n < 0) {
