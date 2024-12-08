@@ -28,3 +28,12 @@ func Abs(n int) int {
     }
     return n
 }
+
+func IndexOf(limit int, predicate func(i int) bool) int {
+    for i := range limit {
+        if(predicate(i)) {
+            return i
+        }
+    }
+    return -1
+}
