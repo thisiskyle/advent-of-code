@@ -81,7 +81,6 @@ func calculateAnswer(input [][]int) int {
     ans := 0
     for i := range input {
         index := (len(input[i]) / 2)
-        fmt.Println(index)
         ans += input[i][index]
     }
     return ans
@@ -89,6 +88,31 @@ func calculateAnswer(input [][]int) int {
 
 func fixIncorrect(incorrect [][]int, rules map[int][]int) [][]int {
     var returnMe = make([][]int, 0)
+
+    for i := range incorrect {
+        weights := make(map[int]int)
+
+        for _, k := range incorrect[i] {
+            weights[k] = 0
+        }
+
+        for _, k := range incorrect[i] {
+            for _, r := range rules[k] {
+                _, ok := weights[r]
+                if(ok) {
+                    weights[r]++
+                }
+            }
+        }
+
+        returnMe = append(returnMe, make([]int, len(weights)))
+
+        for k, v := range weights {
+            returnMe[i][v] = k
+        }
+
+        fmt.Println(weights)
+    }
     return returnMe
 }
 
@@ -104,8 +128,6 @@ func part1(rawInput []string) int {
             correct = append(correct, input[i])
         }
     }
-
-    fmt.Println(correct)
     return calculateAnswer(correct)
 }
 
@@ -123,5 +145,6 @@ func part2(rawInput []string) int {
 
     fmt.Println(incorrect)
     fixed := fixIncorrect(incorrect, rules)
+    fmt.Println(fixed)
     return calculateAnswer(fixed)
 }
